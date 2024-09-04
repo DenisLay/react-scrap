@@ -1,9 +1,11 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import EditorComp from '../editorComp/EditorComp';
 
-function EditorWrap(props) {  
+function EditorWrap({code}) {  
 
-  const [code, setCode] = useState(props.code)
+  useEffect(() => {
+    console.log('EditorWrap code:', code);
+  }, [code]);
 
   return (
     <div className="editor-wrap">
