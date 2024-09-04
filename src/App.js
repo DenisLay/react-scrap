@@ -1,5 +1,9 @@
 import logo from './logo.svg';
 import './App.css';
+import Button from '@mui/material/Button';
+import Alert from '@mui/material/Alert';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
 
 function App() {
   return (
@@ -17,6 +21,11 @@ function App() {
         >
           Learn React
         </a>
+        <Button variant="contained">Hello world</Button>
+        <Alert severity="success">
+          Here is a gentle confirmation that your action was successful.
+        </Alert>
+        <Card variant="outlined">Content</Card>
       </header>
     </div>
   );
