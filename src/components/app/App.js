@@ -38,8 +38,8 @@ function App() {
   };
 
   async function getPage() {
-    const res = await fetch('https://www.google.com')
-                .then(response => { console.log(response) })
+    const res = await fetch(url)
+                .then(response => console.log(response))
                 .catch(error => console.log(error));
   }
 
@@ -63,6 +63,7 @@ function App() {
                   >
                   <TextField id="outlined-basic" label="XPath" variant="outlined" />
                   <TextField id="outlined-basic" label="Regex" variant="outlined" />
+                  <TextField id="outlined-basic" label="Url" variant="outlined" value={url} onChange={(event) => { setUrl(event.target.value) }} />
                   <Button variant='contained'>Parse</Button>
                 </Stack>
 
