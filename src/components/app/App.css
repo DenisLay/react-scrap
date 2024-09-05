@@ -1,5 +1,5 @@
 .App {
-  background-color: #282c34;
+  /*background-color: #282c34;*/
   min-height: 100vh;
 }
 
@@ -18,6 +18,11 @@
 
 .break-3 {
   margin-top: 30px;
+}
+
+.editor-comp {
+  /*border: rgb(131, 131, 131) 1px solid;
+  border-radius: 2px;*/
 }
 
 .App-logo {
