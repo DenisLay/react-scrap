@@ -6,13 +6,23 @@ import EditorWrap from '../editorWrap/EditorWrap';
 import Header from '../header/Header';
 import { BrowserRouter } from 'react-router-dom';
 import TabPanel from '../tabPanel/TabPanel';
+import Stepper from '@mui/material/Stepper';
+import Step from '@mui/material/Step';
+import StepLabel from '@mui/material/StepLabel';
 
 function App() {
 
-  const [code, setCode] = useState('<!-- some comment -->')
-  const [url, setUrl] = useState('')
-  const [targetUrl, setTargetUrl] = useState('')
-  const [tabIndex, setTabIndex] = useState(0)
+  const steps = [
+    'Download page',
+    'Set block divide method',
+    'Result',
+  ];
+
+  const [code, setCode] = useState('<!-- some comment -->');
+  const [xpath, setXpath] = useState('');
+  const [url, setUrl] = useState('');
+  const [targetUrl, setTargetUrl] = useState('');
+  const [tabIndex, setTabIndex] = useState(0);
   const [cardItems, setCardItems] = useState([
     {
       code: '<!-- some comment -->'
@@ -32,7 +42,8 @@ function App() {
     {
       code: '<!-- some comment -->'
     },
-  ])
+  ]);
+  const [step, setStep] = useState(0)
   
   const handleChange = (event, newValue) => {
     setTabIndex(newValue);
@@ -61,9 +72,23 @@ function App() {
                 .catch(error => console.error(error));
   }
 
-  function updateCode() {
-    setCode(prevCode => prevCode + prevCode)
-    console.log(code)
+  function getItemsByXPath(src) {
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(src, 'text/html');
+
+    const result = doc.evaluate(xpath, doc, null, XPathResult.ANY_TYPE, null);
+
+    let node;
+    const nodes = [];
+    while ((node = result.iterateNext())) {
+        nodes.push(node);
+    }
+
+    const items = [];
+    
+    nodes.forEach(node => items.push({ code: node.outerHTML }));
+
+    setCardItems(items);
   }
 
   return (
@@ -72,18 +97,29 @@ function App() {
       <BrowserRouter>
         <Container>
             <div className='app-body'>
+              <Box sx={{width: '100%'}}>
+                <Stepper activeStep={step} alternativeLabel>
+                  {
+                    steps.map((label) => (
+                      <Step key={label}>
+                        <StepLabel>{label}</StepLabel>
+                      </Step>
+                    ))
+                  }
+                </Stepper>
+              </Box>
               <Stack spacing={2}>
-                <Button variant='contained' onClick={() => getPage()}>Get page</Button>
+                <Button variant='contained' onClick={() => { postQuery() }}>Get page</Button>
 
                 <Stack
                     direction="row"
                     sx={{ justifyContent: 'space-between', alignItems: 'center' }}
                   >
-                  <TextField id="outlined-basic" label="XPath" variant="outlined" />
+                  <TextField id="outlined-basic" label="XPath" variant="outlined" value={xpath} onChange={(event) => { setXpath(event.target.value) }}  />
                   <TextField id="outlined-basic" label="Regex" variant="outlined" />
                   <TextField id="outlined-basic" label="Target Url" variant="outlined" value={targetUrl} onChange={(event) => { setTargetUrl(event.target.value) }} />
                   <TextField id="outlined-basic" label="Url" variant="outlined" value={url} onChange={(event) => { setUrl(event.target.value) }} />
-                  <Button variant='contained' onClick={() => postQuery()}>Parse</Button>
+                  <Button variant='contained' onClick={() => { getItemsByXPath(code) }}>Parse</Button>
                 </Stack>
 
                 <Tabs

@@ -5,7 +5,7 @@ function EditorComp({code}) {
 
   return (
     <div className="editor-comp">
-      <Editor height="80vh" defaultLanguage="html" defaultValue={code} value={code} theme="vs-dark" />
+      <Editor height="80vh" defaultLanguage="html" defaultValue={code} value={code} theme="vs-dark" wordWrap={"off"} />
     </div>
   );
 }
