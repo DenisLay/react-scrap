@@ -1,14 +1,12 @@
 import './App.css';
 import { useState } from 'react';
 import Container from '@mui/material/Container';
-import { Button, TextField, Stack, Tab, Tabs, Card, Typography, Box, Divider } from '@mui/material';
+import { Button, TextField, Stack, Tab, Tabs, Card, Typography, Box, Divider, Accordion, AccordionSummary, AccordionDetails } from '@mui/material';
 import EditorWrap from '../editorWrap/EditorWrap';
 import Header from '../header/Header';
 import { BrowserRouter } from 'react-router-dom';
 import TabPanel from '../tabPanel/TabPanel';
-import Stepper from '@mui/material/Stepper';
-import Step from '@mui/material/Step';
-import StepLabel from '@mui/material/StepLabel';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 function App() {
 
@@ -19,6 +17,7 @@ function App() {
   ];
 
   const [code, setCode] = useState('<!-- some comment -->');
+  const [previewCode, setPreviewCode] = useState('<!-- some comment -->');
   const [xpath, setXpath] = useState('');
   const [url, setUrl] = useState('');
   const [targetUrl, setTargetUrl] = useState('');
@@ -68,6 +67,7 @@ function App() {
                   return response.text();
                 }).then(function(data) {
                   setCode(data);
+                  setPreviewCode(data);
                 })
                 .catch(error => console.error(error));
   }
@@ -96,18 +96,7 @@ function App() {
       <Header/>
       <BrowserRouter>
         <Container>
-            <div className='app-body'>
-              <Box sx={{width: '100%'}}>
-                <Stepper activeStep={step} alternativeLabel>
-                  {
-                    steps.map((label) => (
-                      <Step key={label}>
-                        <StepLabel>{label}</StepLabel>
-                      </Step>
-                    ))
-                  }
-                </Stepper>
-              </Box>
+            <div className='app-body' style={{'padding-top': '20px'}}>
               <Stack spacing={2}>
                 <Button variant='contained' onClick={() => { postQuery() }}>Get page</Button>
 
@@ -127,23 +116,41 @@ function App() {
                   onChange={handleChange}>
 
                   <Tab label="Editor" id={0} />
-                  <Tab label="Cards" id={1} />
+                  <Tab label="Preview" id={1} />
+                  <Tab label="Cards" id={2} />
 
                 </Tabs>
 
                 <TabPanel value={tabIndex} index={0}>
-                  <EditorWrap code={code}/>
+                  <EditorWrap code={code} style={{'display': 'none'}}/>
                 </TabPanel>
 
                 <TabPanel value={tabIndex} index={1}>
+                  <div dangerouslySetInnerHTML={{ __html: previewCode }} />
+                </TabPanel>
+
+                <TabPanel value={tabIndex} index={2}>
                   <Stack spacing={4}>
                     {
                       cardItems.map(card => (
                         <Card variant="outlined" sx={{ maxWidth: 360 }}>
                           <Box sx={{ p: 2 }}>
                             <Typography gutterBottom variant="body2">
-                              {card.code}
+                              <Accordion>
+                                <AccordionSummary
+                                  expandIcon={<ExpandMoreIcon />}
+                                  aria-controls="panel1-content"
+                                  id="panel1-header"
+                                >
+                                  XPath result
+                                </AccordionSummary>
+                                <AccordionDetails>
+                                  {card.code}
+                                </AccordionDetails>
+                              </Accordion>
                             </Typography>
+                            <Divider/>
+                            <div dangerouslySetInnerHTML={{ __html: card.code }} />
                           </Box>
                           <Divider />
                           <Stack
