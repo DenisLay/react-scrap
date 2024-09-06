@@ -11,6 +11,7 @@ function App() {
 
   const [code, setCode] = useState('<!-- some comment -->')
   const [url, setUrl] = useState('')
+  const [targetUrl, setTargetUrl] = useState('')
   const [tabIndex, setTabIndex] = useState(0)
   const [cardItems, setCardItems] = useState([
     {
@@ -43,6 +44,23 @@ function App() {
                 .catch(error => console.log(error));
   }
 
+  async function postQuery() {
+    const res = await fetch(url, 
+                { 
+                  method: 'POST', 
+                  body: JSON.stringify({ link: targetUrl }),
+                  headers: {
+                    'Content-Type': 'application/json'
+                  }
+                })
+                .then(function(response) {
+                  return response.text();
+                }).then(function(data) {
+                  setCode(data);
+                })
+                .catch(error => console.error(error));
+  }
+
   function updateCode() {
     setCode(prevCode => prevCode + prevCode)
     console.log(code)
@@ -63,8 +81,9 @@ function App() {
                   >
                   <TextField id="outlined-basic" label="XPath" variant="outlined" />
                   <TextField id="outlined-basic" label="Regex" variant="outlined" />
+                  <TextField id="outlined-basic" label="Target Url" variant="outlined" value={targetUrl} onChange={(event) => { setTargetUrl(event.target.value) }} />
                   <TextField id="outlined-basic" label="Url" variant="outlined" value={url} onChange={(event) => { setUrl(event.target.value) }} />
-                  <Button variant='contained'>Parse</Button>
+                  <Button variant='contained' onClick={() => postQuery()}>Parse</Button>
                 </Stack>
 
                 <Tabs
