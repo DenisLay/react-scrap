@@ -8,6 +8,7 @@ import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import Drawer from '@mui/material/Drawer';
 import { Container } from '@mui/material';
+import { NavLink } from "react-router-dom";
 
 function Header() {  
 
@@ -20,11 +21,14 @@ function Header() {
         <Drawer anchor='left'
                 open={sideBarVisibility}
                 onClose={() => setSideBarVisibility(!sideBarVisibility)}>
-          <div style={{width: 200, display: 'flex', flexDirection: 'column'}}>
-            <Button color="inherit">Main</Button>
-            <Button color="inherit">Tests</Button>
-            <Button color="inherit">Lab</Button>
-            <Button color="inherit">Spiders</Button>
+          <div style={{width: 200}}>
+            <nav>
+              <ul>
+                <li>
+                  <NavLink to="/">Lab</NavLink>
+                </li>
+              </ul>
+            </nav>
           </div>
         </Drawer>
           <IconButton
