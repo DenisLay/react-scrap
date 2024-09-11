@@ -1,24 +1,19 @@
 import './App.css';
-import { Routes, Route } from 'react-router-dom';
 import Container from '@mui/material/Container';
 import Header from '../header/Header';
-import { BrowserRouter } from 'react-router-dom';
-import LabPage from '../../pages/labPage/LabPage';
+import AppRouting from '../routes/AppRouting';
+import { Provider } from 'react-redux';
+import store from '../../store/store';
 
 function App() {
 
-  return (
-    <div className="App">
-      <Header/>
-      <BrowserRouter>
-        <Container>
-          <Routes>
-            <Route path='/' element={LabPage} />
-          </Routes>
-        </Container>
-      </BrowserRouter>
-    </div>
-  );
+	return (
+		<div className="App">
+			<Provider store={store}>
+				<AppRouting />
+			</Provider>
+		</div>
+	);
 }
 
 export default App;

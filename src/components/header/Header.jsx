@@ -9,8 +9,9 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Drawer from '@mui/material/Drawer';
 import { Container } from '@mui/material';
 import { NavLink } from "react-router-dom";
+import SideBar from "../sidebar/SideBar";
 
-function Header() {  
+function Header() {
 
   const [sideBarVisibility, setSideBarVisibility] = React.useState(false)
 
@@ -18,19 +19,7 @@ function Header() {
     <Box sx={{ flexGrow: 2 }}>
       <AppBar position="static">
         <Toolbar>
-        <Drawer anchor='left'
-                open={sideBarVisibility}
-                onClose={() => setSideBarVisibility(!sideBarVisibility)}>
-          <div style={{width: 200}}>
-            <nav>
-              <ul>
-                <li>
-                  <NavLink to="/">Lab</NavLink>
-                </li>
-              </ul>
-            </nav>
-          </div>
-        </Drawer>
+          <SideBar sideBarVisibility={sideBarVisibility} setSideBarVisibility={setSideBarVisibility} />
           <IconButton
             size="large"
             edge="start"
