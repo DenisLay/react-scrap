@@ -50,7 +50,7 @@ const ModalWindow = (props) => {
 						</FormControl>
 						<Button type="submit"
 								onClick={() => {
-										dispatch(push({id: Math.floor(Math.random() * (1000 + 1)), name: name}));
+										dispatch(push({id: Math.floor(Math.random() * (1000 + 1)), name: name, description: description}));
 										setName('');
 										setDescription('');
 										props.setOpen(false);
